@@ -129,7 +129,7 @@ window.addEventListener('resize', () => chart.resize());
 </script>
 ```
 
-**深色主题集成：** 始终用 `echarts.init(el, 'dark')` + `backgroundColor: 'transparent'`，和 Astra Dark Gold 融合。
+**深色主题集成：** 始终用 `echarts.init(el, 'dark')` + `backgroundColor: 'transparent'`，和 Asyre Dark Gold 融合。
 
 ### 什么场景用什么
 

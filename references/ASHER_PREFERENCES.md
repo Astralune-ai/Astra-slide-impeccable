@@ -1,6 +1,6 @@
 # Asher's Presentation Preferences
 
-> 这些偏好在使用 Astra Presentation 技能时**始终生效**，不需要每次重复说明。
+> 这些偏好在使用 Asyre Presentation 技能时**始终生效**，不需要每次重复说明。
 
 ## 图标系统
 - **用 SVG inline icons**，不用 emoji。SVG 跨平台渲染一致，emoji 在投影仪/不同设备上显示不一致。
@@ -9,7 +9,7 @@
 
 ## 背景图
 - **每页用不同的概念艺术底图**，按页面内容匹配，绝不能所有页面用同一张图（试过，立刻被否决——"太丑了"）。
-- 概念艺术风格：暗黑底 + 金色发光线条（Astra Dark Gold）。
+- 概念艺术风格：暗黑底 + 金色发光线条（Asyre Dark Gold）。
 - 背景图 opacity 通常 0.2-0.4，overlay 0.45-0.6。
 - 需要新底图时用 **gemini-3-pro-image-preview** 生成（不用 2.0-flash、2.5-flash-image 等低质量模型——Asher 原话"那些模型都太垃圾了"）。
 - 概念艺术 prompt 关键词：`pure black background, golden-amber glowing ethereal light trails, sparks, luminous outlines, dark fantasy game concept art`。
@@ -47,7 +47,7 @@
 - 城市、公司名、人名等事实性内容必须精准，不能猜。
 
 ## 设计风格
-- **Astra Dark Gold** 是默认风格。不要随意"创意重设计"推翻已有设计。
+- **Asyre Dark Gold** 是默认风格。不要随意"创意重设计"推翻已有设计。
 - 改动要渐进式微调，不要一次性大刀阔斧。
 - Asher 有自己的审美标准，不喜欢被 AI 的"创意"推着走。
   - 反面案例：LLM 训练页的创意重做被评"非常差"，要求恢复原版。

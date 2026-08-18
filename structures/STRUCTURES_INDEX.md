@@ -16,7 +16,7 @@
 ## 公共约定（所有 25 个文件共享）
 
 - Canvas: `viewBox="0 0 1400 788"` (16:9.2)
-- 风格: Astra Dark Gold · 背景 `#0a0a0b` + grid pattern
+- 风格: Asyre Dark Gold · 背景 `#0a0a0b` + grid pattern
 - 字体: Noto Serif SC (CJK display) · Space Grotesk (EN display) · JetBrains Mono (tech caption)
 - 角标: 右上 `cornerRing` with `ringInner` 无限旋转 + 当前文件编号
 - 左上版本标: `IMPECCABLE · v2` (font 9, opacity 0.35, letter-spacing 2)
@@ -82,5 +82,5 @@
 
 - [STRUCTURE_PRESETS.md](../references/STRUCTURE_PRESETS.md) — 每个 preset 的详细布局参数 + 踩坑清单 + 硬规则 0-11
 - [ASHER_PREFERENCES.md](../references/ASHER_PREFERENCES.md) — Asher 个人偏好（SVG 非 emoji / 大字 / 170% base / 等）
-- [ASYRE_BRAND_PRESET.md](../references/ASYRE_BRAND_PRESET.md) — Astra Dark Gold 完整色板 + 字体栈
+- [ASYRE_BRAND_PRESET.md](../references/ASYRE_BRAND_PRESET.md) — Asyre Dark Gold 完整色板 + 字体栈
 - [ANIMATION_PATTERNS.md](../references/ANIMATION_PATTERNS.md) — 15 核心动画模式方法论

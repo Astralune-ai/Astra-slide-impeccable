@@ -2525,7 +2525,7 @@ effects.play_107 = function(scope){
   const o2 = scope.querySelector('.tt107out2');
   const p2 = scope.querySelector('.tt107p2');
   if(!cmd) return;
-  const command = 'astra build --prod';
+  const command = 'asyre build --prod';
   gsap.to(cur,{opacity:0,duration:0.4,repeat:-1,yoyo:true,ease:'steps(1)'});
   function runLoop(){
     cmd.textContent=''; o1.textContent=''; o2.textContent=''; p2.textContent='';

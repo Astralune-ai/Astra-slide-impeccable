@@ -23,7 +23,6 @@ body {
 }
 
 /* 2. Each slide = exact viewport height */
-/* Default: 16:9 landscape — slide fills full viewport */
 .slide {
     width: 100vw;
     height: 100vh;
@@ -33,27 +32,6 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-}
-
-/* 2b. Portrait 9:16 — opt-in via .deck-portrait on <html> or wrapper */
-/* When the deck is authored in 9:16, the slide is letterboxed centered:
-   width = min(100vw, 100vh * 9 / 16). Pixel target: 720×1280 in PDF. */
-.deck-portrait .slide,
-.slide.portrait {
-    width: min(100vw, calc(100vh * 9 / 16));
-    height: min(100vh, calc(100vw * 16 / 9));
-    aspect-ratio: 9 / 16;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Portrait deck wrapper — black letterbox bars on landscape screens */
-.deck-portrait {
-    background: #000;
-}
-
-.deck-portrait body {
-    background: #000;
 }
 
 /* 3. Content container — flex centering with overflow protection */
@@ -209,47 +187,6 @@ p, li, blockquote {
         --slide-padding: clamp(1.5rem, 6vw, 3rem);
         --content-gap: clamp(1rem, 3vw, 2rem);
     }
-}
-
-/* ===========================================
-   PORTRAIT 9:16 — Override scale & spacing
-   In portrait, vw is small (720-ish), so vw-based clamps
-   resolve too small. Boost the floor on the formulas.
-   See references/portrait-9-16.md for full hard rules.
-   =========================================== */
-
-.deck-portrait,
-.deck-portrait :root,
-:root.deck-portrait {
-    /* Bigger title floor — 9:16 viewport vw is narrow, so floor matters more */
-    --title-size: clamp(2rem, 7vw, 4rem);
-    --h2-size: clamp(1.5rem, 5vw, 2.75rem);
-    --h3-size: clamp(1.2rem, 3.5vw, 2rem);
-    --body-size: clamp(0.95rem, 2.5vw, 1.4rem);
-    --small-size: clamp(0.8rem, 1.8vw, 1.05rem);
-    --stat-size: clamp(3rem, 12vw, 7rem);
-    /* Tighter padding — letterbox already eats horizontal space */
-    --slide-padding: clamp(1rem, 4vw, 2.5rem);
-    --content-gap: clamp(0.6rem, 2.5vw, 1.5rem);
-}
-
-/* Force single-column layouts in portrait — 720-ish width can't carry 3 cols */
-.deck-portrait .grid {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-}
-
-/* Portrait images: taller crop allowed since slide is taller */
-.deck-portrait img,
-.deck-portrait .image-container {
-    max-height: min(40vh, 600px);
-}
-
-/* Portrait card: leave more vertical breathing room */
-.deck-portrait .card,
-.deck-portrait .container,
-.deck-portrait .content-box {
-    max-width: min(85%, 600px);
-    max-height: min(40vh, 500px);
 }
 
 /* Ultra-wide screens (> 2000px) — prevent content from becoming too sparse */

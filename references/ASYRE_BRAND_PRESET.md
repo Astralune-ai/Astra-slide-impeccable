@@ -1,8 +1,8 @@
-# Astra Brand Preset — Dark Gold
+# Asyre Brand Preset — Dark Gold
 
-> The signature Astra visual identity. Forged from real presentations. Dark, authoritative, amber-lit.
+> The signature Asyre visual identity. Forged from real presentations. Dark, authoritative, amber-lit.
 
-This is the **default recommended style** for Astra Presentation. When users don't have a strong preference, suggest this style.
+This is the **default recommended style** for Asyre Presentation. When users don't have a strong preference, suggest this style.
 
 ---
 
@@ -25,7 +25,7 @@ Cinematic, authoritative, contemplative — like a keynote in a dark theater wit
 
 ```css
 :root {
-    /* === Astra Dark Gold Palette === */
+    /* === Asyre Dark Gold Palette === */
     --bg-primary: #0a0a0b;
     --bg-secondary: #111113;
     --bg-tertiary: #18181b;
@@ -140,7 +140,7 @@ This style is DESIGNED for per-slide AI background images. Without them it still
 }
 ```
 
-**Opacity by slide type (Astra-specific, tuned from real presentations):**
+**Opacity by slide type (Asyre-specific, tuned from real presentations):**
 
 | Slide Type | Image Style | Overlay |
 |-----------|------------|---------|

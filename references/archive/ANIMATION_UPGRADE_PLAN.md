@@ -55,7 +55,7 @@ notes: "effect 35 只用 1-2 个焦点 cell，不是全部"
 ## 4. 最终文件结构
 
 ```
-astra-slide-impeccable/
+next-slide-impeccable/
 ├── SKILL.md                    # 动画规则段收口重写
 ├── ANIMATION_PATTERNS.md       # 改定位：方法论 + 编排原则（不是索引）
 ├── animation-showcase.html     # 保留，视觉浏览器角色
