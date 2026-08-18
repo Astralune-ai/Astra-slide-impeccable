@@ -1,518 +1,466 @@
 ---
-name: asyre-presentation
-description: "Asyre Presentation — zero-dependency HTML slide decks + dense SVG infographics with impeccable design quality. 50+ curated styles, 24 structure templates (funnel / hub-spoke / iceberg / radar / jigsaw / isometric-map etc.) with 25 canonical QA'd reference files, 140 GSAP animations, optional AI-generated backgrounds (Gemini/Imagen), bilingual CJK + EN support, PPT/Markdown conversion, PDF export. Use this whenever the user wants to create slides, build a presentation, prepare a talk, make a deck, produce an infographic, redraw a chart/framework/table from a screenshot, convert PPT, generate a structure diagram (漏斗/中心辐射/对比表/时间线 etc.), 做演示, 准备演讲, 画信息图, 把截图重绘, or whenever they need any HTML-based visual artifact beyond simple text — even if they don't explicitly say 'presentation'."
+name: astra-slide-impeccable
+description: "Astra Presentation — 演示型 slide / deck / presentation 主入口。两条等价渲染路径：SVG（固定 viewBox 1400×788 / 720×1280，GSAP timeline 动画，32 个 QA 过的 structures 模板）vs 响应式 HTML（clamp() 全屏自适应，CSS reveal 动画）。用 /astra-slide 命令直接进，flag 选路径，否则默认弹问让用户选。两种 aspect ratio: 16:9 landscape（投影/桌面 deck）+ 9:16 portrait（演讲稿、短视频脚本、Discord 长截图）。50+ visual styles、140 GSAP 动画、AI 生成背景（Gemini）、CJK 双语字体栈、PPT/Markdown 转换、PDF 导出。Use this whenever the user wants 做演示 / 准备演讲 / build a presentation / make a deck / 重绘 chart-framework-table 截图 / convert PPT / generate 结构图 (漏斗/中心辐射/对比表/时间线 etc.). 注意：纯小红书内容卡片 / 信息图直出 走 /astra-graphic，不是这里。"
 user-invocable: true
 ---
 
-# Asyre Presentation
+# Astra Presentation
 
 > 你的下个 ppt，何必是 PPT
 
-Create zero-dependency, animation-rich HTML presentations that run entirely in the browser. 50+ curated visual styles, optional AI-generated background images per slide, bilingual support, PPT/Markdown conversion, and one-click sharing — elevated by the impeccable design ecosystem for presentations that go beyond templates.
-
-**Powered by:** Next Slide engine + Impeccable design principles + AI image generation
+零依赖、动画饱满的浏览器原生 slide deck。**两条对等的渲染路径**——SVG（带 GSAP 动画，结构图模板丰富）和响应式 HTML（clamp 自适应，文字密度灵活）——**每次都让用户选**，因为各有所长不互替。两种 aspect ratio（16:9 / 9:16）+ 50+ styles + AI 背景 + 双语 CJK + PPT/MD 转换 + PDF 导出。
 
 ## Your Role
 
-You are an **elite presentation designer** — the kind of designer whose work gets featured on Awwwards and Dribbble. You have deep expertise in typography, color theory, motion design, and editorial layout. Every slide you create feels intentionally crafted, never generic.
+You are an **elite presentation designer** — Awwwards / Dribbble caliber. Every slide feels intentionally crafted, never generic. Reference the curated styles in [STYLE_PRESETS.md](references/STYLE_PRESETS.md) and the canonical structure files in `structures/` (16:9) or `structures-portrait/` (9:16) — they're tested, QA'd reference implementations.
 
-When building presentations:
-- Think like a **creative director**, not a template filler
-- Every design choice must be **deliberate** — font pairing, spacing rhythm, color hierarchy, animation choreography
-- The output should make people say "wait, this is just an HTML file?"
-- Reference the 50+ curated styles in [STYLE_PRESETS.md](references/STYLE_PRESETS.md) — each one is a complete design system with exact typography, colors, layout DNA, and animation patterns
+**The AI Slop Test is your quality bar:** if someone could look at this and instantly say "AI made this," you've failed.
 
-### Design Philosophy Integration
+## Asher's Preferences (always active)
 
-You also embody the **impeccable design philosophy**. Before defaulting to presets, you consider:
-- Whether a `.impeccable.md` design context exists that should inform your choices
-- Whether the {{command_prefix}}frontend-design principles can ELEVATE a preset beyond its default expression
-- Whether this presentation deserves a fully custom style derived from design context
+Before generating, read [ASHER_PREFERENCES.md](references/ASHER_PREFERENCES.md). Non-negotiable defaults: SVG icons (not emoji), per-page unique backgrounds, 170% font base, big diagrams, accurate content, incremental design changes, gemini-3-pro for image gen.
 
-You never produce "AI slop." The AI Slop Test from {{command_prefix}}frontend-design is your quality bar:
+## 真数据图表 → astra-charts（`structures/` 里没有数据图）
 
-> If you showed this presentation to someone and said "AI made this," would they believe you immediately? If yes, that's the problem.
+`structures/` 的 25 个模板都是**概念图**（漏斗、冰山、SWOT、维恩、路线图…），
+一张**数据图**都没有。要在 deck 里放"这六个渠道各占多少""一千个询价最后成了几个"
+这类带真实数字的图，别手搓 —— 用 `astra-charts` 出碎片贴进来：
 
-## Asher's Preferences (ALWAYS ACTIVE)
+```bash
+python3 ~/.claude/skills/astra-charts/render.py <图型> --fragment \
+  --at 700,96 --size 640,600 --palette slate --dark --data '{...}'
+```
 
-**Before generating any slide, read [ASHER_PREFERENCES.md](references/ASHER_PREFERENCES.md).** These are non-negotiable defaults that override generic behavior. Key rules: SVG icons (not emoji), per-page unique backgrounds, 170% font base, big diagrams, accurate content, incremental design changes, gemini-3-pro for image gen.
+它返回 `container`（嵌套 `<svg>`，贴进本页的 `<svg>` 里）+ `js`（已包在 IIFE 里，
+贴页尾）+ `css`（入场动画）+ `deps`。**优先挑纯 SVG 的图型**——那 30 张
+`deps` 是空的，零依赖原则不破；ECharts / Chart.js 的要 CDN。
+`--dark` 会把明度反相以适配深底。不知道该用哪张图就先问路由：
+
+```bash
+python3 ~/.claude/skills/astra-charts/pick.py --shape funnel --scene 汇报 --explain
+```
+
+样例见 `~/Desktop/图表自动选型_2026-08-15/13_slide嵌图_零依赖.html`。
+
+---
 
 ## Core Principles
 
 1. **Zero Dependencies** — Single HTML files with inline CSS/JS. No npm, no build tools.
-2. **Show, Don't Tell** — Generate visual previews. People discover what they want by seeing it.
+2. **Aspect ratio is structural, not cosmetic** — 9:16 ≠ 16:9 squeezed. Pick early, layout follows.
 3. **Distinctive Design** — No generic "AI slop." Every presentation must feel custom-crafted.
 4. **Viewport Fitting (NON-NEGOTIABLE)** — Every slide MUST fit exactly within 100vh. No scrolling. Content overflows? Split into multiple slides.
 5. **Bilingual Native** — Full Chinese + English support. Font stacks always include CJK fallbacks.
-6. **Design Context Aware** — When `.impeccable.md` exists, use its brand personality, aesthetic direction, and design principles to inform every choice — from color to typography to animation. Presets become starting points, not endpoints.
-
-## Design Aesthetics
-
-You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates "AI slop." Avoid this: make creative, distinctive frontends that surprise and delight.
-
-Focus on:
-
-- **Typography:** Choose fonts that are beautiful, unique, and interesting. Avoid Inter, Roboto, Arial. Use Google Fonts or Fontshare. For Chinese text, pair with Noto Sans SC, Noto Serif SC, or LXGW WenKai.
-- **Color & Theme:** Commit to a cohesive aesthetic. Use CSS variables. Dominant colors with sharp accents outperform timid palettes.
-- **Motion:** Use GSAP for all animations. Start from [animation-combos.md](references/animation-combos.md) — 10 ready-made timeline combos for common scenarios (hero-reveal, dashboard-awakening, pitch-impact, testimonial-elegance, tech-demo, celebration, ambient-talk, etc.). If no combo matches, query [animation-index.json](animation-index.json) by mood / purpose / applicable_to to pick individual effects, then call them via `effects.play_XX(scope)` from [animation-snippets.js](animation-snippets.js). For deeper design thinking, consult the 15 core pattern methodologies in [ANIMATION_PATTERNS.md](references/ANIMATION_PATTERNS.md). One well-orchestrated page load beats scattered micro-interactions.
-- **Backgrounds:** Create atmosphere and depth. Layer CSS gradients, use geometric patterns, or add contextual effects.
-
-### Impeccable Design Elevation
-
-When design context is available (via `.impeccable.md`), go beyond the guidelines above:
-
--> *Consult [DESIGN_ELEVATION.md](references/DESIGN_ELEVATION.md) for the full elevation protocol.*
-
-Key principle: A preset defines a visual system. Design context tells you WHY you're designing. The intersection creates presentations that are both technically reliable AND emotionally resonant with the specific audience.
-
-When IMPECCABLE_CONTEXT is active, also consult these {{command_prefix}}frontend-design references for deeper guidance:
-- Typography: font pairing principles, modular scales, avoid invisible defaults
-- Color & Contrast: OKLCH, tinted neutrals, 60-30-10 rule
-- Motion Design: exponential easing, stagger patterns, perceived performance
-- Spatial Design: 4pt base grid, semantic spacing, hierarchy through multiple dimensions
-
-## Viewport Fitting Rules
-
-These invariants apply to EVERY slide in EVERY presentation:
-
-- Every `.slide` must have `height: 100vh; height: 100dvh; overflow: hidden;`
-- ALL font sizes and spacing must use `clamp(min, preferred, max)` — never fixed px/rem
-- Content containers need `max-height` constraints
-- Images: `max-height: min(50vh, 400px)`
-- Breakpoints required for heights: 700px, 600px, 500px
-- Include `prefers-reduced-motion` support
-
-**When generating, read `viewport-base.css` and include its full contents in every presentation.**
-
-### Content Density Limits Per Slide
-
-| Slide Type    | Maximum Content                                           |
-| ------------- | --------------------------------------------------------- |
-| Title slide   | 1 heading + 1 subtitle + optional tagline                 |
-| Content slide | 1 heading + 4-6 bullet points OR 1 heading + 2 paragraphs |
-| Feature grid  | 1 heading + 6 cards maximum (2x3 or 3x2)                  |
-| Comparison    | 1 heading + 2 columns, 4 items each                       |
-| Timeline      | 1 heading + 4-5 timeline nodes                             |
-| Stats         | 1 heading + 3-4 big numbers with labels                   |
-| Quote slide   | 1 quote (max 3 lines) + attribution                       |
-| Image slide   | 1 heading + 1 image (max 60vh height)                     |
-| Code slide    | 1 heading + 8-10 lines of code                            |
-
-**Content exceeds limits? Split into multiple slides. Never cram, never scroll.**
+6. **Design Context Aware** — When `.impeccable.md` exists, use its brand personality + aesthetic direction to inform every choice.
 
 ---
 
-## Phase 0: Detect Mode
+## Phase 0 · Detect Rendering Mode + Mode + Aspect Ratio (DO FIRST)
 
-Determine what the user wants:
+Three orthogonal decisions. **Rendering mode** decides which generator to use and is asked every time unless explicit; **mode** and **aspect ratio** are inferred silently when possible.
 
-- **Mode A: New Presentation** — Create from scratch. Go to Phase 1.
-- **Mode B: PPT Conversion** — Convert a .pptx file. Go to Phase 4.
-- **Mode C: Enhancement** — Improve an existing HTML presentation. Read it, understand it, enhance.
-- **Mode D: Reference Match** — User provides a screenshot/URL as style reference. Match to closest preset or create custom style. Go to Phase 2.
-- **Mode E: Markdown Conversion** — User provides a `.md` file path or pastes markdown content. Go to Phase 4B.
-- **Mode G: Screenshot Redraw** — User provides a screenshot of a table/framework/chart. Recreate it in our visual style as SVG, embed into slide.
+### 0.0 Rendering Mode — SVG vs 响应式 HTML（**最重要、必问**）
 
-### Mode E: Markdown Detection
+This skill has **two equally first-class generation paths**. They are not interchangeable — pick consciously, every time.
 
-Auto-detect when:
-- User provides a path ending in `.md` (not SKILL.md/CLAUDE.md/README.md — those are docs, not slides)
-- User pastes content with markdown slide patterns: `---` horizontal rules (slide separators), multiple `## Heading` blocks, or bullet-heavy structure
+| Path | Canvas | Animation | 适合 | 不适合 |
+|---|---|---|---|---|
+| **SVG**（推荐，reference 多） | 固定 viewBox `1400×788` (16:9) 或 `720×1280` (9:16)，等比缩放 | GSAP timeline + 永续 rAF 粒子，可精确编排 | 结构图、信息图、impeccable 出品质感 deck、需要精确动画/坐标 | 大段长文、内嵌视频、跨设备交互复杂的场景 |
+| **响应式 HTML** | `100vh` 自适应，`clamp()` 字号 | CSS reveal + IntersectionObserver | 长文型 deck、需要内嵌图片/视频/iframe、跨设备阅读 | 需要精确动画编排、想用现成的 32 个 structure 模板 |
 
-When detected:
-1. Read the `.md` file (or capture the pasted content)
-2. Confirm with the user: "Looks like a slide deck in Markdown — want me to convert this to an HTML presentation?"
-3. If yes -> go to Phase 4B (Markdown Conversion)
+**Decision protocol:**
 
-### Mode C: Modification Rules
+1. **如果通过 `/astra-slide --svg ...` 进入** → `RENDERING_MODE = svg`，跳过询问。
+2. **如果通过 `/astra-slide --html ...` 进入** → `RENDERING_MODE = html`，跳过询问。
+3. **任何其它入口（无 flag、自然语言触发、`/astra-slide` 不带 flag）** → **必须**用 `AskUserQuestion` 弹二选一，不要默认任何一种：
 
-When enhancing existing presentations:
+   ```
+   选哪种渲染路径？（每次都问，不记住偏好）
 
-1. **Before adding content:** Count existing elements, check against density limits
-2. **Adding images:** Must have `max-height: min(50vh, 400px)`. If slide already has max content, split into two slides
-3. **After ANY modification, verify:** `.slide` has `overflow: hidden`, new elements use `clamp()`, images have viewport-relative max-height, content fits at 1280x720
-4. **Proactively reorganize:** If modifications will cause overflow, automatically split content and inform the user
+   A. SVG slide（推荐 — reference 多）
+      固定 viewBox，GSAP 动画，等比缩放。32 个 QA 过的 structures 模板可复用。
+      适合：结构图、信息图、impeccable 出品质感 deck。
 
-### Mode G: Screenshot Redraw (截图重绘)
+   B. 响应式 HTML
+      clamp() 全屏自适应，CSS reveal。
+      适合：长文型 deck、内嵌图片/视频、跨设备阅读。
+   ```
 
-用户给一张表格/框架/图表截图，让我们在 Asyre 视觉系统里重绘成 SVG 嵌到 slide。完整流程（识别 → 确认 → 重绘 → 嵌入 → 密度检查）见 [references/mode-g-screenshot-redraw.md](references/mode-g-screenshot-redraw.md)。
+   选 A → `RENDERING_MODE = svg`；选 B → `RENDERING_MODE = html`。
 
-核心：匹配到 24 种结构之一 → 优先读 [structures/STRUCTURES_INDEX.md](structures/STRUCTURES_INDEX.md) 对应参考文件照抄布局 → 只换内容。
+4. `RENDERING_MODE` **决定 Phase 3 走哪一支**（Phase 3-SVG 或 Phase 3-HTML）。其它 Phase 共用。
 
-### Mode F: Impeccable Context Detection
+**为什么不让 Claude 自己猜：** 这两条路出来的产物质感差异巨大，用户偏好和场景判断比关键词匹配靠谱得多。Asher 明确说"两个同等重要、要让我决定、每次都问"——遵守。
 
-**This mode activates ALONGSIDE any other mode. It is a modifier, not exclusive.**
+### 0.1 Mode (what the user wants)
 
-On every invocation, before proceeding to any other phase:
+| Mode | Trigger | Action |
+|---|---|---|
+| **A · New** | "创建/做/写一个 deck/演示/slide" + topic | Phase 1 |
+| **B · PPT Convert** | User provides a `.pptx` path | [phase-4-conversions.md](references/phase-4-conversions.md) |
+| **C · Enhance** | "改/优化/加" + existing HTML path | Read existing HTML → understand → modify in place |
+| **D · Reference Match** | User provides screenshot/URL as style ref | Match closest preset, then Phase 2 |
+| **E · Markdown Convert** | User provides `.md` path (not SKILL/CLAUDE/README) or pastes markdown with `---` separators | [phase-4-conversions.md](references/phase-4-conversions.md) |
+| **G · Screenshot Redraw** | User gives table/chart/framework screenshot, wants it redrawn in Astra style | [mode-g-screenshot-redraw.md](references/mode-g-screenshot-redraw.md) |
 
-1. Check for `.impeccable.md` in the project root / current working directory
-2. If found: Read it. Set internal flag `IMPECCABLE_CONTEXT = true`. This unlocks:
-   - "Design from my context" option in Phase 2 (Step 2.5)
-   - Preset elevation in Phase 2 (Step 2.6)
-   - Design elevation enhancements in Phase 3
-   - AI Slop Test and design alignment checks in Phase 3.5
-3. If NOT found: Proceed normally. In Phase 1, offer a lightweight option to create one.
+### 0.2 Aspect Ratio (decides which structure library + viewport rules)
 
-Mode F does NOT change the flow — it ENHANCES it. A user in Mode A (new presentation) with Mode F active gets all of Mode A's workflow PLUS impeccable enhancements at each phase.
+**Default to 16:9 unless any portrait signal is present.**
 
----
+| Signal | → Aspect |
+|---|---|
+| "竖版", "9:16", "portrait", "vertical" | **9:16** |
+| "小红书", "RedNote", "XHS" + slide/deck (not card — those go to `/astra-graphic`) | **9:16** |
+| "Discord 长截图", "手机看", "phone share", "WeChat 朋友圈分享" | **9:16** |
+| "短视频脚本卡", "TikTok shorts" | **9:16** |
+| "投影/projector/conference/keynote/desktop" | **16:9** |
+| Default / silent / unclear | **16:9** |
 
-## Phase 1: Content Discovery (New Presentations)
+Set `ASPECT_RATIO = landscape | portrait`. **This variable is consulted in every subsequent phase** to pick:
+- Structure references (`structures/` vs `structures-portrait/`)
+- viewport-base.css mode (`html` gets `.deck-portrait` class for portrait)
+- SVG canvas (1400×788 vs 720×1280)
+- PDF export flag (default vs `--portrait`)
 
-**Ask ALL questions in a single message** so the user fills everything out at once.
+**Edge case** — explicit conflict like "9:16 投影"：default to user's first stated dimension (9:16 here), surface a one-liner: "用 9:16，会让投影上下留黑边——确认？" and proceed.
 
-**When running in Claude Code CLI**, use `AskUserQuestion` tool for each question with selectable options. This gives the user clickable choices instead of requiring typed answers. Ask questions sequentially — each answer may inform the next.
+### 0.3 Impeccable Context (always check, additive)
 
-**Question 1 — Language:**
-What language is the presentation in? Options: English / 中文 / Bilingual (双语)
+Run a quick fuzzy scan for design context — DO NOT skip even if user didn't mention it:
 
-**Question 2 — Purpose:**
-What is this presentation for? Options: Pitch deck / Teaching-Tutorial / Conference talk / Internal presentation / Academic defense / Product launch
-
-**Question 3 — Length:**
-Approximately how many slides? Options: Short 5-10 / Medium 10-20 / Long 20+
-
-**Question 4 — Content:**
-Do you have content ready? Options: All content ready / Rough notes / Topic only
-
-**Question 5 — Inline Editing:**
-Do you need to edit text directly in the browser after generation? Options: Yes (Recommended) / No
-
-If user has content, ask them to share it.
-
-**Question 6 — Design Context:**
-
-- If `IMPECCABLE_CONTEXT = true`: "I found your design context in `.impeccable.md`. Should I use it to guide the visual style?" Options: Yes, use my design context / No, I'll pick from presets
-- If `IMPECCABLE_CONTEXT = false`: "Would you like to establish a design identity for this presentation? This takes ~2 minutes and improves quality." Options: Yes, let's set it up / No, I'll pick from presets
-
-If user says yes and no `.impeccable.md` exists, go to Phase 1.5.
-
-### Step 1.2: Image Evaluation (if images provided)
-
-If user provides images:
-
-1. **Scan** — List all image files
-2. **View each image** — Use the Read tool (multimodal)
-3. **Evaluate** — For each: what it shows, USABLE or NOT USABLE, dominant colors
-4. **Co-design the outline** — Curated images inform slide structure alongside text
-5. **Confirm:** "Does this slide outline and image selection look right?"
-
----
-
-## Phase 1.5: Lightweight Design Context (Optional)
-
-This phase is a LIGHTWEIGHT alternative to {{command_prefix}}teach-impeccable, tailored specifically for presentations. Only triggered when:
-- No `.impeccable.md` exists AND user opts in (from Question 6), OR
-- User explicitly asks for a custom design-driven style
-
-**If the user wants the FULL design context experience** (codebase exploration, detailed UX questioning, comprehensive design principles), tell them to run `{{command_prefix}}teach-impeccable` separately. Phase 1.5 is the quick path for presentations.
-
-### Three Questions Only:
-
-**Q1 — Audience & Context:**
-Who will see this presentation, and in what setting?
-(e.g., "investors at a pitch meeting", "engineers at an internal review", "students in a lecture hall")
-
-**Q2 — Brand Personality:**
-Describe the feeling in 3 words.
-(e.g., "bold, confident, modern" or "warm, approachable, playful" or "elegant, refined, minimal")
-
-**Q3 — Aesthetic Direction:**
-Any visual references, anti-references, or strong preferences?
-(e.g., "Apple keynote vibes but warmer", "NOT corporate blue", "like a Monocle magazine spread")
-
-### Synthesize and Save:
-
-Write a `.impeccable.md` in the project root / cwd:
-
-```markdown
-## Design Context
-
-### Users
-[Synthesized from Q1 — who they are, their context, the job to be done]
-
-### Brand Personality
-[Synthesized from Q2 — voice, tone, 3-word personality, emotional goals]
-
-### Aesthetic Direction
-[Synthesized from Q3 — visual tone, references, anti-references, theme preference]
-
-### Design Principles
-[3 principles derived from the answers that should guide all design decisions]
+```bash
+ls -la .impeccable.md 2>/dev/null || \
+  ls -1 2>/dev/null | grep -iE '(\.impeccable\.md$|^design[_-]philosophy.*\.md$|^.*[_-]philosophy.*\.md$|^philosophy.*\.md$|^design[_-]context.*\.md$|^brand[_-]?(guide|identity|style).*\.md$|^style[_-]guide.*\.md$|^visual[_-](identity|language).*\.md$)'
 ```
 
-Set `IMPECCABLE_CONTEXT = true` and proceed to Phase 2.
+- Exact `.impeccable.md` found → `IMPECCABLE_CONTEXT = true`, read it, done.
+- Fuzzy candidates found → show the user, ask "用这个作为 design context 吗？" — single question, options inline.
+- Nothing → `IMPECCABLE_CONTEXT = false`. Don't ask the user to set one up — just proceed with defaults. (If they later say "I have a brand guide", flip then.)
 
 ---
 
-## Phase 2: Style Discovery
+## Phase 1 · Content Discovery (Mode A only)
 
-**This is the "show, don't tell" phase.**
+**Minimum viable questions** — only ask what cannot be inferred. Most users want to give you content and trust you on the rest.
 
-### Step 2.0: Style Path
+**Always ask (1 question):**
+- What's the language? Options: 中文 / English / Bilingual
 
-Ask how they want to choose:
+**Ask only if not already provided:**
+- What's the content? (skip if user already shared it inline)
 
-- **"Asyre Dark Gold"** (recommended) — The signature Asyre style: dark cinematic backgrounds, amber/gold accents, editorial serif typography, horizontal slide transitions. Pairs perfectly with AI-generated concept art backgrounds. See [ASYRE_BRAND_PRESET.md](references/ASYRE_BRAND_PRESET.md) for full spec.
-- **"Show me options"** — Generate 3 previews based on mood from the 53+ preset library
-- **"Browse the gallery"** — Open the local style gallery for visual browsing: `open style-gallery.html` (lightweight preview of all 50+ styles). For the full interactive gallery with live demos, visit: https://next-slide.vercel.app/gallery
-- **"I know what I want"** — Pick from preset list directly
-- **"Match this reference"** — User provides screenshot/URL, AI matches closest style
-- **"Design from my context"** (only shown when `IMPECCABLE_CONTEXT = true`) — Create a CUSTOM style derived from your `.impeccable.md` design context. Uses the same HTML architecture and viewport-base.css, but colors, typography, spacing rhythm, and animation choreography are synthesized from your brand personality and aesthetic direction. Go to Step 2.5.
+**Do NOT ask by default** (use these defaults silently, only ask if user signals a non-default):
+- Purpose → infer from content (pitch / teaching / conference / internal). User can override later.
+- Length → infer from content; if topic-only, default 8-10 slides.
+- Inline editing → Yes (default). Skip asking.
+- Style → **Astra Dark Gold** (default). Skip Phase 2 question 2.0 unless user asks "show me options" or "different style".
+- Design context → already detected in 0.3.
 
-**If reference match:** Analyze the reference image for colors, typography feel, layout structure. Find the 2-3 closest presets from [STYLE_PRESETS.md](references/STYLE_PRESETS.md), generate previews of each with the user's content, let them pick.
+**Why so few questions:** every question is friction. Asher knows what he wants, and the defaults match his preferences. If you're wrong on a default, he'll correct in one line — that's cheaper than 5 questions every time.
 
-### Step 2.1: Mood Selection (Guided Discovery)
+**When running in Claude Code CLI**, use `AskUserQuestion` tool for the language question with selectable options.
 
-**When running in Claude Code CLI**, use `AskUserQuestion` tool with selectable options for mood selection and style picking (Steps 2.1 and 2.4).
-
-Ask (multiSelect, max 2):
-What feeling should the audience have? Options:
-
-- Impressed/Confident — Professional, trustworthy
-- Excited/Energized — Innovative, bold
-- Calm/Focused — Clear, thoughtful
-- Inspired/Moved — Emotional, memorable
-- Fun/Creative — Playful, unique
-
-### Step 2.2: Category Filter
-
-Based on mood, suggest a category:
-
-| Mood                | Suggested Categories               |
-| ------------------- | ---------------------------------- |
-| Impressed/Confident | Dark Themes, Bold & Creative       |
-| Excited/Energized   | Bold & Creative, Specialty         |
-| Calm/Focused        | Light Themes                       |
-| Inspired/Moved      | Dark Themes, Cultural & Special    |
-| Fun/Creative        | Bold & Creative, Cultural & Special|
-
-### Step 2.3: Generate 3 Style Previews
-
-Generate 3 distinct single-slide HTML previews. Read [STYLE_PRESETS.md](references/STYLE_PRESETS.md) for preset specifications.
-
-**Each preview must be:**
-- A single self-contained HTML file (inline CSS/JS, no external dependencies except Google Fonts)
-- Showing one animated title slide using the **user's actual title and subtitle** — never use placeholder text like "Lorem Ipsum" or "Your Title Here"
-- Saved to `.claude-design/slide-previews/style-a.html`, `style-b.html`, `style-c.html`
-- ~50-100 lines each
-
-**After generating all three**, open each in the browser:
-```
-open .claude-design/slide-previews/style-a.html
-open .claude-design/slide-previews/style-b.html
-open .claude-design/slide-previews/style-c.html
-```
-
-### Step 2.4: User Picks
-
-**When running in Claude Code CLI**, use `AskUserQuestion` tool with options: Style A / Style B / Style C / Mix elements.
-
-Which style preview do you prefer? Options: Style A / Style B / Style C / Mix elements
-
-If "Mix elements", ask for specifics.
-
-### Step 2.5: Custom Style from Design Context
-
-当用户选 "Design from my context" 时触发——从 `.impeccable.md` 合成一套全新视觉系统（不从 53 预设里挑）。完整流程（设计原则调用 → 变量合成 → 生成 2 变体 → 用户选或 fallback 预设）见 [references/phase-2.5-custom-style.md](references/phase-2.5-custom-style.md)。
-
-### Step 2.6: Preset Elevation (when IMPECCABLE_CONTEXT = true and user chose a preset)
-
-When the user picks a preset from the standard flow (Steps 2.1-2.4) BUT `.impeccable.md` design context exists, apply targeted ELEVATION to the preset. The preset is the foundation; design context provides refinements.
-
-**1. Typography elevation**: If the preset uses a common/overused font (Inter, Roboto, Open Sans, Lato, Montserrat), consult `.impeccable.md` aesthetic direction and the {{command_prefix}}frontend-design typography reference to find a MORE distinctive alternative that matches both the preset's mood and the brand personality. Keep the same weight/style relationships.
-
-**2. Color tinting**: Apply the `.impeccable.md` brand direction as subtle adjustments to the preset's palette:
-- Tint neutral colors toward the brand hue (even 0.01 chroma in OKLCH creates subconscious cohesion)
-- Adjust accent colors if they clash with stated brand direction
-- The preset's core palette structure stays — only details shift
-
-**3. Animation refinement**: Match animation tempo to both the preset's mood AND the presentation's audience context from `.impeccable.md`. Executive audiences get slower, more deliberate animations; technical audiences get crisper, faster transitions.
-
-**4. Confirm elevations**: Show the user what you plan to change and WHY. They can:
-- Accept all elevations
-- Reject individual changes
-- Revert to pure preset (escape hatch)
-
-This step is ADDITIVE — the preset structure is preserved, impeccable principles refine the details.
+If user provides images, view them inline (multimodal Read), evaluate USABLE/NOT, integrate into outline.
 
 ---
 
-## Phase 2.8: AI Background Images (Optional)
+## Phase 2 · Style Selection
 
-当 style 确认后，可选为每张 slide 生成 AI 概念艺术背景（Gemini-3-pro-image-preview）。全部流程见 [references/phase-2.8-bg-images.md](references/phase-2.8-bg-images.md)。
+### Default path (silent)
 
-**核心决策**：问用户 `every slide / key only / provide own / no images`。选 "no images" → 直接跳 Phase 3，CSS-only。选其他 → 生成 prompts → 调用 image-gen skill → 接 `.slide-bg` 样式（不透明度规则见 reference）。
+If user didn't ask about style, default to **Astra Dark Gold** ([ASYRE_BRAND_PRESET.md](references/ASYRE_BRAND_PRESET.md)) and proceed to Phase 3. This is what 80%+ of decks should use. Don't waste a turn asking.
 
-**Asyre Dark Gold prompt 模板**（默认）：
-```
-Abstract dark background illustration: [slide topic as visual metaphor],
-[golden/amber color direction]. Pure black background, concept art, ethereal.
-No text, no watermarks.
-```
+### When user wants choice
 
-## Phase 3: Generate Presentation
+Trigger on phrases like "show me styles", "different style", "I want something else", or "match this reference":
 
-Generate the full presentation using content from Phase 1 and style from Phase 2.
+- **"Show me options"** — Generate 3 single-slide previews using their actual title (not Lorem Ipsum). Save to `.claude-design/slide-previews/style-{a,b,c}.html`. Open all three in browser. Use `AskUserQuestion` with A/B/C/Mix.
+- **"Browse the gallery"** — `open style-gallery.html` (local) or share `https://next-slide.vercel.app/gallery`.
+- **"Match this reference"** — Analyze reference image (colors, typography feel, layout), match 2-3 closest presets from [STYLE_PRESETS.md](references/STYLE_PRESETS.md), generate previews of each.
+- **"Design from my context"** (only if `IMPECCABLE_CONTEXT = true`) — Synthesize fully custom style. See [phase-2.5-custom-style.md](references/phase-2.5-custom-style.md).
 
-**Before generating, read these supporting files:**
+### Preset Elevation (when IMPECCABLE_CONTEXT = true)
 
-- [html-template.md](references/html-template.md) — HTML architecture and JS features
-- [viewport-base.css](viewport-base.css) — Mandatory CSS (include in full)
-- [ANIMATION_PATTERNS.md](references/ANIMATION_PATTERNS.md) — Animation reference for the chosen feeling
-
-### 🔴 MANDATORY for Structure Diagrams — Read Canonical Reference First
-
-**If the slide contains any of the 24 structure types** (funnel, hub-spoke, iceberg, bridge, radar-chart, bento-grid, dashboard, circular-flow, hierarchical-layers, linear-progression, tree-branching, winding-roadmap, story-mountain, structural-breakdown, dense-modules, periodic-table, comparison-table, binary-comparison, comparison-matrix, swot-analysis, venn-diagram, jigsaw, isometric-map, comic-strip):
-
-1. **Open [structures/STRUCTURES_INDEX.md](structures/STRUCTURES_INDEX.md)** · find the matching preset
-2. **Read the corresponding `structures/NN-name.html`** · this is the canonical reference — tested, QA'd, 硬规则 0-11 all fixed inside
-3. **Copy the layout scaffold**: `<defs>`, filter region values, corner ring, footer strip, GSAP timeline, perpetual rAF particles, color coordination
-4. **Only swap content**: title / subtitle / domain-specific text / data numbers / color semantic (if brand differs)
-5. **Do NOT re-derive layout math** (hex geometry / iso projection / puzzle tab-blank / etc.) — the reference already has the correct formulas
-
-**Why this matters**: every reference file in `structures/` was debugged through multiple rounds with Asher. Re-deriving from scratch re-introduces the same bugs (radar sweep flying off, PEAK glow going square, brightness tween plunging to black, winner highlight off by 20px, hover CSS getting clobbered by GSAP inline style, etc.). These are all fixed in the references.
-
-If a structure you need doesn't exist in `structures/`, read [STRUCTURE_PRESETS.md](references/STRUCTURE_PRESETS.md) for the abstract spec + 硬规则 + 踩坑 clauses, then derive from scratch applying all 11 hard rules.
-
-**Key requirements:**
-
-- Single self-contained HTML file, all CSS/JS inline
-- Include the FULL contents of viewport-base.css in the `<style>` block
-- Use fonts from Google Fonts or Fontshare — never system fonts
-- For Chinese content, always include CJK font in the stack
-- Add detailed comments explaining each section
-- Navigation: Arrow keys, Space, click buttons, swipe on mobile
-- Progress bar at top
-- Page counter at bottom
-- Always include comprehensive fallback font stacks. For offline/unreliable network scenarios, consider using `font-display: swap` on all Google Font links. If user requests offline mode, embed critical font subsets as base64.
-- **PDF-SAFE (MANDATORY):** Every `.slide` element must include `visible` class by default (see 6B.1 Pitfall 1)
-- **PDF-SAFE (MANDATORY):** `.slide-content` must have `position: relative; z-index: 2;` (see 6B.1 Pitfall 2)
-- **PDF-SAFE:** Include `@media print` CSS block forcing all animated elements to `opacity: 1 !important` (see 6B.1 Pitfall 3)
-
-### Phase 3 Generation Details
-
-Background image 集成、bilingual 字体处理、impeccable elevation 的完整细节见 [references/phase-3-details.md](references/phase-3-details.md)。要点：
-
-- **Background image 集成**：每个 `.slide` 加 `.slide-bg` div + `.slide-bg-overlay` + `.slide-content` (z-index stacking)
-- **Bilingual**：CJK fallback `Noto Sans SC` / `Noto Serif SC` 必须在 font-family stack 里，`letter-spacing 0.05em` · `line-height 1.8`
-- **Impeccable elevation**（当 `IMPECCABLE_CONTEXT = true`）：typography 升级 · color 色温调整 · 动画 tempo 配合 audience context · AI Slop Test
-
-## Phase 3.5: Quality Assurance
-
-After generating the HTML in Phase 3, perform a self-validation pass before proceeding to delivery. This catches viewport, font, and density issues before the user sees the result.
-
-**Steps:**
-
-1. **Re-read the generated file** — Use the Read tool to load the full HTML output
-2. **Check overflow** — Every `.slide` element must have `overflow: hidden`. If any slide is missing it, add it.
-3. **Check font links** — All `<link>` tags for fonts must point to valid Google Fonts (`fonts.googleapis.com`) or Fontshare (`api.fontshare.com`) URLs. Remove or fix any broken/invalid font links.
-4. **Check clamp() usage** — All `font-size` and spacing values (`margin`, `padding`, `gap`) must use `clamp()`. Flag and fix any fixed `px` or `rem` values that should be responsive.
-5. **Check content density** — Compare each slide's content against the density limits table (Phase 0). If any slide exceeds limits, split it and renumber.
-6. **Check CJK fonts** — If any Chinese text exists in the presentation, verify that a CJK font (e.g. `Noto Sans SC`, `Noto Serif SC`, `LXGW WenKai`) is included in both the `<link>` imports and the font stack. Add if missing.
-7. **Fix before proceeding** — If any check fails, fix the issue in-place and re-verify. Only proceed to Phase 5 (Delivery) when all checks pass.
-7b. **PDF-safe check** — Verify all three PDF export requirements from 6B.1:
-   - Every `.slide` element has `visible` class in the HTML
-   - `.slide-content` CSS includes `position: relative; z-index: 2;`
-   - `@media print` block exists with `opacity: 1 !important` on all animated elements
-   If any are missing, add them before proceeding.
-8. **AI Slop Test** (when `IMPECCABLE_CONTEXT = true`) — Review the generated presentation against the AI Slop fingerprints from {{command_prefix}}frontend-design:
-   - Does it use the "AI color palette" (cyan-on-dark, purple-to-blue gradients, neon accents on dark backgrounds)?
-   - Does it have glassmorphism (overused blur effects, glass cards, glow borders)?
-   - Does it use gradient text on metrics or headings?
-   - Does it have identical card grids (icon + heading + text, repeated)?
-   - Does it use rounded rectangles with thick colored border on one side?
-   - Does it feel like "every other AI presentation"?
-   - If ANY of these: redesign the offending elements to be more distinctive.
-9. **Design Context Alignment** (when `IMPECCABLE_CONTEXT = true`) — Compare the output against `.impeccable.md`:
-   - Does the typography match the stated aesthetic direction?
-   - Do the colors align with brand personality?
-   - Does the animation tempo match the audience context?
-   - Are the design principles reflected in the layout decisions?
-   - If misaligned: adjust to match.
-10. **Distinctiveness Check** (when `IMPECCABLE_CONTEXT = true` and a preset was chosen) — Open 2-3 reference presentations from the `styles/` directory that use the SAME preset. Compare. Does this presentation feel meaningfully different because of the design context elevation? If it looks identical to the default preset output, the elevation failed — apply more distinctive choices from the design context.
+If user picks a preset AND `.impeccable.md` exists, apply targeted refinements: typography upgrade away from Inter/Roboto, color tinting toward brand hue, animation tempo matched to audience. Show user the elevations briefly. Full protocol: [DESIGN_ELEVATION.md](references/DESIGN_ELEVATION.md).
 
 ---
 
-## Phase 4: Content Conversion (Modes B/E)
+## Phase 2.8 · AI Background Images (Optional)
 
-PPT (.pptx) 转换和 Markdown 转换的完整流程见 [references/phase-4-conversions.md](references/phase-4-conversions.md)。
+After style is set, optionally generate AI concept-art backgrounds per slide using Gemini-3-pro. Full prompt templates and `.slide-bg` integration: [phase-2.8-bg-images.md](references/phase-2.8-bg-images.md).
 
-- **Mode B · PPT Conversion**：调用 `scripts/extract-pptx.py` 抽取内容 → 确认结构 → 走 Phase 2/3 常规流程
-- **Mode E · Markdown Conversion**：解析 `---` 分页 + 标题层级 → 自动识别 slide 类型（cover/content/comparison/timeline 等）→ 确认 → 走 Phase 2/3
+Default ask: `every slide / key slides only / I'll provide my own / no images`. If "no images" — skip to Phase 3, CSS-only.
 
-## Phase 5-6: Delivery & Export
+---
 
-交付 / 分享 / PDF 导出的完整流程（含 6B.1 PDF 踩坑 100+ 行）见 [references/phase-5-6-delivery.md](references/phase-5-6-delivery.md)。要点：
+## Phase 3 · Generate Presentation
 
-- **Phase 5 Delivery**：保存到用户指定路径 · 列出文件 · 给一键打开命令
-- **Phase 6A Deploy to URL**：Vercel 一键部署（可选）
-- **Phase 6B Export to PDF**：用 `scripts/html_to_pdf.py`（Chrome headless），自动 force `animation:none` + `opacity:1` + `visible` class
+**Route by `RENDERING_MODE`** (decided in Phase 0.0):
 
-**PDF-SAFE 必做**（生成 HTML 时就要做，不然 PDF 导出会空白）：
-- 每个 `.slide` 自带 `visible` class（不依赖 JS 切换）
-- `.slide-content` 设 `position: relative; z-index: 2;`
-- `@media print { .slide { opacity: 1 !important; } }`
+- `RENDERING_MODE = svg` → **Phase 3-SVG** (default-recommended, structures-driven)
+- `RENDERING_MODE = html` → **Phase 3-HTML** (responsive, html-template-driven)
+
+**Shared by both:** style preset (Phase 2), AI background images (Phase 2.8), Asher's preferences, AI-Slop Test, content density limits.
+
+**Different:** canvas system, animation engine, reference library, generation scaffold. The two paths produce **structurally different HTML** — don't mix them.
+
+---
+
+### Phase 3-SVG · 🔴 默认推荐路径
+
+**核心原则：每张 slide 是一张 SVG**（带 GSAP timeline + 永续 rAF 动画）。32 个已 QA 的 reference 模板覆盖大部分场景，**先匹配模板再改内容**——不要从空白 SVG 写起。
+
+#### Step 1 — 选 reference
+
+按 `ASPECT_RATIO` 进入对应的 structures 库：
+
+**For 16:9 (`ASPECT_RATIO = landscape`):**
+- 打开 [structures/STRUCTURES_INDEX.md](structures/STRUCTURES_INDEX.md)，从 24 个结构里匹配（funnel / hub-spoke / iceberg / bridge / radar / dashboard / bento-grid / SWOT / venn / timeline / story-mountain / comparison-table / 等）。
+- 读对应的 `structures/NN-name.html`（viewBox `0 0 1400 788`，Astra Dark Gold，GSAP）。
+
+**For 9:16 (`ASPECT_RATIO = portrait`):**
+- 打开 [structures-portrait/STRUCTURES_PORTRAIT_INDEX.md](structures-portrait/STRUCTURES_PORTRAIT_INDEX.md)，从 8 个高优结构里匹配（linear-progression / dense-modules / funnel / hub-spoke / hierarchical-layers / comparison / story-mountain / iceberg）。
+- 读对应的 `structures-portrait/NN-name-portrait.html`（viewBox `0 0 720 1280`）。
+- **必读** [portrait-9-16.md](references/portrait-9-16.md)：safe-zone 规则、字号缩放、从 16:9 迁移的决策表。
+
+#### Step 2 — 复用 + 替换
+
+- **保留**：骨架坐标、GSAP timeline、filter region、`<defs>` 配色、corner ring、永续 rAF 粒子逻辑、breath 动画。**这些是已经踩坑修复过的**。
+- **只换**：title / subtitle 文案、内容文字、数据、品牌色（如有），需要时换图标。
+- 如果内容维度跟参考不完全吻合（比如参考 6 节点你只有 5 节点），读 [STRUCTURE_PRESETS.md](references/STRUCTURE_PRESETS.md) 对应结构的"踩坑"段调坐标。
+
+#### Step 3 — Reference 没覆盖到的情况
+
+- Landscape 缺模板 → 读 [STRUCTURE_PRESETS.md](references/STRUCTURE_PRESETS.md) 抽象 spec + 硬规则 0-11，从头推导。
+- Portrait 缺模板 → 选最接近的 landscape 模板，读 [portrait-9-16.md](references/portrait-9-16.md) §5 迁移决策表，**重新计算 720×1280**，不要直接旋转 SVG。
+
+#### Step 4 — 多页 deck 的封装
+
+每张 SVG slide 是独立 HTML 文件（`S01-xxx.html` / `S02-xxx.html` / ...）。多页时 Phase 5.5 会生成 `index.html` wrapper（键盘导航 + 移动端 swipe + TOC），见 [phase-5-multi-page-viewer.md](references/phase-5-multi-page-viewer.md)。
+
+#### SVG 路径硬规则速记
+
+- viewBox 永远固定（landscape `1400×788` / portrait `720×1280`），靠 `<svg>` 容器的 width/height 等比缩放。
+- SVG transform + GSAP `y:0` 陷阱：`<g transform="translate(X,Y)">` 元素被 GSAP `{y:0}` 拽到 0。解：动画只 tween opacity，或把 x/y 写到 rect/text 属性上。
+- Filter region：所有 `<filter>` 起步 `x="-50%" y="-50%" width="200%" height="200%"`，`stdDeviation≥4` 用 `-75%/250%`。
+- 节点连线端点：`(cx + nx·R, cy + ny·R)`，不是中心点。
+- 完整规则集：[generation-hard-rules.md](references/generation-hard-rules.md)。
+
+---
+
+### Phase 3-HTML · 响应式路径
+
+**核心原则：标准 HTML 结构 + clamp() 全屏自适应**。适合长文 deck、嵌入图片视频、跨设备阅读。
+
+#### Step 1 — 读模板
+
+| For | Read |
+|---|---|
+| HTML 架构、JS 功能（nav / progress / counter / 触屏 swipe） | [html-template.md](references/html-template.md) |
+| 强制 base CSS（必须完整内嵌） | [viewport-base.css](viewport-base.css) |
+
+#### Step 2 — 动画编排（3-tier funnel）
+
+1. **先查 combo** — [animation-combos.md](references/animation-combos.md) 有 10 个现成 timeline（hero-reveal / dashboard-awakening / pitch-impact / 等）。匹配上直接用。
+2. **没合适的 combo** — 查 [animation-index.json](animation-index.json)，按 `mood` / `purpose` / `applicable_to` 筛单个 effect。
+3. **代码出处** — 调 [animation-snippets.js](animation-snippets.js) 里的 `effects.play_XX(scope)`。
+
+设计原理深读：[ANIMATION_PATTERNS.md](references/ANIMATION_PATTERNS.md)。
+
+#### Step 3 — 生成要点
+
+- 单 self-contained HTML 文件，所有 CSS/JS 内联。
+- `<style>` 里**完整粘贴 viewport-base.css 的内容**。
+- portrait 时给 `<html>` 加 `class="deck-portrait"`（激活 portrait CSS 覆写）。
+- 字体走 Google Fonts / Fontshare，不要纯系统字体。CJK 内容必须 Noto Sans SC / Noto Serif SC / LXGW WenKai 进 stack。
+- 导航：方向键 + Space + 点击 + 移动端 swipe + scroll-snap。
+- 顶部 progress bar，底部 page counter。
+- **PDF-SAFE（强制）**：`.slide-content` 必须 `position: relative; z-index: 2;`（防 bg image 叠层）。
+
+#### Step 4 — 细节
+
+背景图集成、双语字体处理、impeccable elevation 细则：[phase-3-details.md](references/phase-3-details.md)。
+
+---
+
+## Phase 3.5 · Quality Assurance
+
+After generating, self-validate before delivery. Re-read the file and run the checks for **your `RENDERING_MODE`**.
+
+### Shared checks（两条路径都要过）
+
+| # | Check | Action if fails |
+|---|---|---|
+| S1 | All font links valid Google Fonts / Fontshare URLs | Fix or remove broken |
+| S2 | If Chinese text exists, CJK font in `<link>` AND in font stack | Add it |
+| S3 | Content density within limits per [density table](#content-density-limits) | Split slides |
+| S4 | **If `IMPECCABLE_CONTEXT = true`:** AI Slop Test (no cyan-on-dark, no glassmorphism overload, no gradient text on metrics, no identical card grids) | Redesign offending elements |
+| S5 | **If `IMPECCABLE_CONTEXT = true`:** Output aligns with `.impeccable.md` typography / color / animation tempo | Adjust to match |
+
+### `RENDERING_MODE = svg` 专属
+
+| # | Check | Action if fails |
+|---|---|---|
+| V1 | viewBox 严格匹配（landscape `0 0 1400 788` / portrait `0 0 720 1280`） | Fix viewBox |
+| V2 | 所有 `<filter>` region 起步 `x="-50%" y="-50%" width="200%" height="200%"`（`stdDeviation≥4` 用 `-75%/250%`） | Per [generation-hard-rules.md](references/generation-hard-rules.md) |
+| V3 | GSAP timeline 没有把带 `transform="translate(X,Y)"` 的元素 tween 到 `y:0`（会被吸到 0） | 改为只 tween opacity，或把 x/y 写到 rect/text 属性 |
+| V4 | 节点连线端点是 `(cx + nx·R, cy + ny·R)`，不是中心 | Recompute |
+| V5 | **If `ASPECT_RATIO = portrait`:** 内容在 safe zone（y ≥ 60 且 y ≤ 1220），字号是 landscape 等价的 1.6–2× | Per [portrait-9-16.md](references/portrait-9-16.md) §9 |
+
+### `RENDERING_MODE = html` 专属
+
+| # | Check | Action if fails |
+|---|---|---|
+| H1 | Every `.slide` has `overflow: hidden` | Add it |
+| H2 | All `font-size`, `margin`, `padding`, `gap` use `clamp()` | Replace fixed px/rem |
+| H3 | `.slide-content` has `position: relative; z-index: 2;` (PDF-safe) | Add it |
+| H4 | **If `ASPECT_RATIO = portrait`:** `<html>` has `class="deck-portrait"`, `.slide` width is `min(100vw, calc(100vh * 9 / 16))` | Fix per [portrait-9-16.md](references/portrait-9-16.md) §9 |
+
+Only proceed to Phase 5 when all applicable checks pass.
+
+---
+
+## Phase 4 · Content Conversion (Modes B/E)
+
+PPT (.pptx) and Markdown conversion both go through [phase-4-conversions.md](references/phase-4-conversions.md). Both end in Phase 2/3.
+
+- **Mode B**: `scripts/extract-pptx.py` → confirm structure → Phase 2.
+- **Mode E**: parse `---` separators + heading hierarchy → auto-detect slide types (cover/content/comparison/timeline) → confirm → Phase 2.
+
+---
+
+## Phase 5-6 · Delivery & Export
+
+Save → list files → one-click open command. Full delivery flow + 100+ lines of PDF gotchas: [phase-5-6-delivery.md](references/phase-5-6-delivery.md).
+
+- **Phase 5 Delivery**: save to user-specified path, list files, give open command.
+- **Phase 5.5 Multi-Page Viewer**: when deck is multiple `S01-xxx.html` + `S02-xxx.html` files, build `index.html` wrapper with keyboard + mobile swipe + TOC. See [phase-5-multi-page-viewer.md](references/phase-5-multi-page-viewer.md).
+- **Phase 6A Deploy**: Vercel one-click (optional).
+- **Phase 6B PDF Export**: `python3 scripts/html_to_pdf.py input.html` for 16:9, add `--portrait` for 9:16. WYSIWYG screenshot mode (matches browser exactly, no `@media print` quirks). Needs Pillow.
+  - **Multi-file SVG decks**: pass the **deck folder** or its **`index.html`** — the exporter auto-detects `S01-*.html … SNN-*.html`, captures each, and combines. (Single-file `.slide` decks still work by passing that one file.)
+  - **Animations are forced to their final frame** before capture (GSAP `globalTimeline` → `progress(1)`; infinite `repeat:-1` tweens pinned to frame 0 + paused). Fixes the long-standing "PDF ships blank / pre-animation" bug — `--virtual-time-budget` alone does NOT reliably advance rAF-driven GSAP timelines, and infinite tweens stop virtual time from ever settling.
+  - **Headless binary**: prefers Playwright's `chrome-headless-shell` (exits cleanly); full Chrome `--headless` hangs on some machines. If it hangs, ensure a Playwright chromium is cached under `~/Library/Caches/ms-playwright/`.
+
+**PDF-SAFE recap:** only one rule remains — `.slide-content` must have `position: relative; z-index: 2;`. Old `@media print` overrides are no longer needed.
+
+---
+
+## Content Density Limits
+
+Per slide. **If content exceeds, split into multiple slides — never cram, never scroll.**
+
+### 16:9 landscape
+
+| Slide Type | Max content |
+|---|---|
+| Title | 1 heading + 1 subtitle + optional tagline |
+| Content | 1 heading + 4-6 bullets OR 1 heading + 2 paragraphs |
+| Feature grid | 1 heading + 6 cards (2×3 or 3×2) |
+| Comparison | 1 heading + 2 columns × 4 items |
+| Timeline | 1 heading + 4-5 nodes |
+| Stats | 1 heading + 3-4 big numbers + labels |
+| Quote | 1 quote (max 3 lines) + attribution |
+| Image | 1 heading + 1 image (max 60vh) |
+| Code | 1 heading + 8-10 lines |
+
+### 9:16 portrait (lower density — narrower canvas)
+
+| Slide Type | Max content |
+|---|---|
+| Title | 1 heading + 1 subtitle (heading bigger than 16:9) |
+| Content | 1 heading + 3-5 bullets OR 1 heading + 1 paragraph |
+| Feature grid | 1 heading + 6 cards (2×3 vertical stack) |
+| Comparison | 1 heading + top/bottom split (no left/right with 3+ cols) |
+| Timeline | 1 heading + 4-5 nodes (vertical) |
+| Stats | 1 heading + 1-2 hero numbers (bigger than 16:9) |
+| Quote | 1 quote (max 4 lines) + attribution |
+| Image | 1 heading + 1 image (max 50vh, can be portrait crop) |
+| Code | 1 heading + 6-8 lines |
+
+---
 
 ## Style Library
 
-50+ curated styles across 7 categories. See [STYLE_PRESETS.md](references/STYLE_PRESETS.md) for full specifications. Browse visually: `open style-gallery.html`
+50+ curated styles across 7 categories. See [STYLE_PRESETS.md](references/STYLE_PRESETS.md) for full specs. Browse: `open style-gallery.html`.
 
-| Category | Styles | Best For |
-|----------|--------|----------|
-| Dark Themes | Keynote Noir, Bold Signal, Neon Cyber, Terminal Green, Midnight Corporate, Cinema Scope, Dark Botanical, Starfield, Dark Premium, Dark Cinema, Futuristic Blue | Conferences, product launches, tech talks |
-| Light Themes | Swiss Modern, Paper & Ink, Notebook Tabs, Pastel Geometry, Morning Brief, Campus White, Soft Landing, Watercolor Wash, Korean Soft, Claymorphism 3D, Wabi-Sabi Zen | Academic, business, teaching |
-| Editorial | Editorial Serif, Fashion Editorial, Newsprint Broadsheet, Vintage Editorial | Magazine-style, thought leadership |
-| Bold & Creative | Electric Studio, Creative Voltage, Split Pastel, Pop Art, Bold Typography, Neon Brutalism, Memphis Pop | Startups, creative pitches |
-| Retro & Vintage | Grainy Retro, Art Deco Gatsby, Risograph Overprint, Vintage Poster, Retro Arcade | Nostalgic themes, stylized talks |
-| Artistic | Surrealism Gallery, Scrapbook Portfolio, Blue Collage, Pink Handwritten, Art Nouveau Botanical, Soft Dreamy, Terracotta Earth | Art, design, portfolio showcases |
-| Cultural & Special | 东方墨韵, 和風, Gradient Dreams, Blueprint, Bauhaus Primary, Swiss Grid, Aurora Mesh, Chinese Ink Wash | Cultural events, themed presentations |
-
-**Beyond presets:** When `.impeccable.md` exists, you can also generate fully custom styles from design context. See Step 2.5.
+| Category | Styles |
+|---|---|
+| Dark | Keynote Noir, Bold Signal, Neon Cyber, Terminal Green, Midnight Corporate, Cinema Scope, Dark Botanical, Starfield, Dark Premium, Dark Cinema, Futuristic Blue |
+| Light | Swiss Modern, Paper & Ink, Notebook Tabs, Pastel Geometry, Morning Brief, Campus White, Soft Landing, Watercolor Wash, Korean Soft, Claymorphism 3D, Wabi-Sabi Zen |
+| Editorial | Editorial Serif, Fashion Editorial, Newsprint Broadsheet, Vintage Editorial |
+| Bold | Electric Studio, Creative Voltage, Split Pastel, Pop Art, Bold Typography, Neon Brutalism, Memphis Pop |
+| Retro | Grainy Retro, Art Deco Gatsby, Risograph Overprint, Vintage Poster, Retro Arcade |
+| Artistic | Surrealism Gallery, Scrapbook Portfolio, Blue Collage, Pink Handwritten, Art Nouveau Botanical, Soft Dreamy, Terracotta Earth |
+| Cultural | 东方墨韵, 和風, Gradient Dreams, Blueprint, Bauhaus Primary, Swiss Grid, Aurora Mesh, Chinese Ink Wash |
 
 ---
 
-## Canvas Size & Generation Rules
+## Canvas & Generation Rules
 
-生成前的坐标 / 动画 / 布局硬规则全部沉淀在 [references/generation-hard-rules.md](references/generation-hard-rules.md)。要点速查：
+### Canvas sizes
 
-- **Canvas 尺寸**：slide `viewBox="0 0 1400 788"` (16:9) · infographic `viewBox="0 0 1400 {H}"`，H = 最低 y + 20
-- **SVG transform + GSAP `y:0` 陷阱**：元素有 `transform="translate(X,Y)"` 时 GSAP `{y:0}` 会把它强拉到 y=0。对策：只动 opacity，或把 x/y 搬去 rect/text 属性（方案 B）
-- **节点连线止于圆边**：线不穿圆心，用 `(cx+nx·R, cy+ny·R)` 收端
-- **文字防重叠**：小字行距 ≥14 / 中字 ≥18 / 大字 ≥22；card 之间 gap ≥10；card 不贴 canvas/header/footer
-- **SWOT 装饰大字**：4 象限统一左上角对齐
-- **Score/Index badge**：label + value 分上下两行，box 最小 160×48
-- **PDF 导出**：Chrome headless print CSS 自动 force `animation:none` + `opacity:1`
+| Format | Slide HTML | SVG viewBox | PDF px |
+|---|---|---|---|
+| 16:9 landscape | `width: 100vw; height: 100vh` | `0 0 1400 788` | 1280×720 |
+| 9:16 portrait | `width: min(100vw, calc(100vh * 9 / 16))` | `0 0 720 1280` | 720×1280 |
 
-**动画选取三层入口**（详细在 generation-hard-rules.md）：
+### Hard rules (apply to both formats)
 
-1. 场景匹配 combo → [references/animation-combos.md](references/animation-combos.md) 里的 10 个预设 timeline 能对上就直接用
-2. 没匹配 → 查 [animation-index.json](animation-index.json) 按 `mood / purpose / applicable_to` 筛单个 effect
-3. 拿代码 → [animation-snippets.js](animation-snippets.js) 里 `effects.play_XX(scope)` 调用
+Coordinate / animation / layout 硬规则 are sealed in [generation-hard-rules.md](references/generation-hard-rules.md). Quick recap:
 
-遇到具体坑（GSAP transform、brightness tween、filter region 被截方块、hover 被 inline style 压掉等），对应的固化实现直接见 [structures/STRUCTURES_INDEX.md](structures/STRUCTURES_INDEX.md) 的 25 个参考文件——照抄比重写快。
+- **SVG transform + GSAP `y:0` trap**: elements with `transform="translate(X,Y)"` get yanked to y=0 by GSAP `{y:0}`. Solution: animate opacity only, OR move x/y onto rect/text attributes.
+- **Node connector ends at circle edge**: `(cx + nx·R, cy + ny·R)`, not the center.
+- **Text spacing**: small ≥14px line gap, medium ≥18, large ≥22; cards gap ≥10; cards never touch canvas/header/footer.
+- **Score/badge**: label + value in 2 rows, box min 160×48.
+- **Filter region**: all `<filter>` start with `x="-50%" y="-50%" width="200%" height="200%"`. stdDeviation ≥4 needs `-75%/250%`.
+
+### Portrait-specific hard rules
+
+See [portrait-9-16.md](references/portrait-9-16.md) for the full set. Key ones:
+
+- viewBox is **always recalculated**, never just rotated from 16:9.
+- Top safe zone: y ≥ 60. Bottom safe zone: y ≤ 1220. Outside that, platform UI may overlap.
+- Font sizes inside SVG are **1.6-2× the landscape equivalent** (720 wide is much narrower than 1400).
+- No 3-column horizontal layouts in portrait — single column or 2-column max.
 
 ---
 
 ## Supporting Files
 
-| File | Purpose | When to Read |
-|------|---------|-------------|
-| [STYLE_PRESETS.md](references/STYLE_PRESETS.md) | 50+ curated visual presets | Phase 2 |
-| [viewport-base.css](viewport-base.css) | Mandatory responsive CSS | Phase 3 |
+| File | Purpose | When |
+|---|---|---|
+| [STYLE_PRESETS.md](references/STYLE_PRESETS.md) | 50+ visual presets | Phase 2 |
+| [viewport-base.css](viewport-base.css) | Mandatory responsive CSS (incl. portrait overrides) | Phase 3 |
 | [html-template.md](references/html-template.md) | HTML structure, JS features | Phase 3 |
-| [animation-combos.md](references/animation-combos.md) | **Choreography 层** · 10 个预设 timeline combo（hero/dashboard/pitch/testimonial/tech-demo 等） | Phase 3 第一入口（场景能对上就用） |
-| [animation-index.json](animation-index.json) | **Discovery 层** · 140 效果的 metadata 索引（mood / purpose / speed / applicable_to / pattern_family） | Phase 3 combo 没匹配时，按字段筛单个 effect |
-| [animation-snippets.js](animation-snippets.js) | **Code 层** · 140 个 GSAP 函数按 ID 索引，`effects.play_XX(scope)` 直接调用 | Phase 3 确定 effect ID 后 |
-| [animation-showcase.html](animation-showcase.html) | **视觉预览** · 140 个效果实时循环跑，13 分类 5 列网格 | Phase 3 视觉不确定时浏览器打开 |
-| [ANIMATION_PATTERNS.md](references/ANIMATION_PATTERNS.md) | **方法论** · 15 个核心 pattern + 编排原则 + 视觉规范 | Phase 3 深入理解动画设计思路 |
-| [STRUCTURE_PRESETS.md](references/STRUCTURE_PRESETS.md) | 24 structure templates (bento-grid, funnel, hub-spoke, iceberg, etc.) + 硬规则 0-11 | Mode G, Phase 3 |
-| [structures/STRUCTURES_INDEX.md](structures/STRUCTURES_INDEX.md) | **24 canonical HTML references** + index (1400×788 SVG, Asyre Dark Gold, GSAP) — 已跑通、过 QA、修完所有踩坑 | Mode G, Phase 3 — **必读蓝本**，生成同类结构前照抄布局 |
-| [SCENARIO_TEMPLATES.md](references/SCENARIO_TEMPLATES.md) | Scenario structures, narrative arcs, extra slide types | Phase 1 (when user picks a scenario) & Phase 3 |
-| [scripts/extract-pptx.py](scripts/extract-pptx.py) | PPT content extraction | Phase 4A |
-| [ASYRE_BRAND_PRESET.md](references/ASYRE_BRAND_PRESET.md) | Asyre Dark Gold brand style + AI image prompt system | Phase 2 (default), 2.8 |
-| [DESIGN_ELEVATION.md](references/DESIGN_ELEVATION.md) | How impeccable principles elevate presets and custom styles | Phase 2.5, 2.6, 3 |
-| `.impeccable.md` (project root) | Project design context — auto-detected | Phase 0, 1, 2, 3, 3.5 |
-| {{command_prefix}}frontend-design | Design principles, AI Slop Test, reference library | Phase 2.5, 3, 3.5 |
-| {{command_prefix}}teach-impeccable | Full design context gathering (Phase 1.5 is lightweight alternative) | Optional |
-| {{command_prefix}}image-gen | AI image generation for slide backgrounds | Phase 2.8 |
+| [portrait-9-16.md](references/portrait-9-16.md) | **9:16 hard rules + safe zones + migration table** | Phase 0.2, Phase 3 (portrait) |
+| [animation-combos.md](references/animation-combos.md) | 10 timeline combos | Phase 3 (first try) |
+| [animation-index.json](animation-index.json) | 140 effects metadata | Phase 3 (no combo match) |
+| [animation-snippets.js](animation-snippets.js) | 140 GSAP function bodies | Phase 3 |
+| [ANIMATION_PATTERNS.md](references/ANIMATION_PATTERNS.md) | 15 pattern methodology | Phase 3 (deep dive) |
+| [STRUCTURE_PRESETS.md](references/STRUCTURE_PRESETS.md) | 24 landscape structure specs + 硬规则 0-11 | Phase 3-SVG (no template match), Mode G |
+| [structures/STRUCTURES_INDEX.md](structures/STRUCTURES_INDEX.md) | **24 canonical 16:9 SVG refs** | **Phase 3-SVG, landscape — copy layout** |
+| [structures-portrait/STRUCTURES_PORTRAIT_INDEX.md](structures-portrait/STRUCTURES_PORTRAIT_INDEX.md) | **8 canonical 9:16 SVG refs** | **Phase 3-SVG, portrait — copy layout** |
+| [SCENARIO_TEMPLATES.md](references/SCENARIO_TEMPLATES.md) | Scenario structures, narrative arcs | Phase 1, 3 |
+| [scripts/extract-pptx.py](scripts/extract-pptx.py) | PPT extraction | Phase 4A |
+| [scripts/html_to_pdf.py](scripts/html_to_pdf.py) | PDF export (16:9 default, `--portrait` for 9:16) | Phase 6B |
+| [ASYRE_BRAND_PRESET.md](references/ASYRE_BRAND_PRESET.md) | Astra Dark Gold full spec + AI image prompts | Phase 2 (default), 2.8 |
+| [DESIGN_ELEVATION.md](references/DESIGN_ELEVATION.md) | How impeccable principles refine presets | Phase 2.5, 2.6, 3 |
+| [ASHER_PREFERENCES.md](references/ASHER_PREFERENCES.md) | Asher's non-negotiable defaults | Always |
+| `.impeccable.md` (project root) | Project design context | Phase 0.3 |
+
+---
+
+## Why so few client questions
+
+Phase 1 only asks 1 question (language) by default. Combined with the rendering-mode question in Phase 0.0, that's at most 2 questions before generation. Intentional:
+
+- **Asher knows what he wants.** Five questions every time = friction. He'd rather you guess and ship, then correct in one line.
+- **Defaults match his preferences.** Astra Dark Gold + 16:9 + standard length covers 80% of cases. The other 20% he'll signal explicitly ("竖版", "show me other styles", "make it short").
+- **Inferable signals win over questions.** Aspect ratio comes from "小红书"/"竖版"/"projector" in the prompt. Style comes from explicit "show me options". Length comes from content volume. Mode (PPT convert / Markdown / Enhance / 截图重绘) is silent from file types and verbs.
+- **The one exception is RENDERING_MODE.** Phase 0.0 must ask every time (unless `/astra-slide --svg` / `--html` flag is passed) — SVG and 响应式 HTML produce structurally different outputs and Asher explicitly wants to choose, every time, no session memory.
+
+If you find yourself drafting 3+ questions for a routine deck (beyond rendering-mode + language), stop and ask: which of these has a sensible default? Use the default, mention it briefly in your action message, ship the work.
+
+
+## 客户品牌资产（astra-brand 统一接口，2026-06-10 起）
+客户品牌（配色/字体/logo/信纸）一律从**中央品牌库**取，不要硬编码进本技能：读 `$ASTRA_BRAND_DIR`（默认 `~/.astra/brands`）`/<pack>/brand.json`（palette 四件套 / fonts / logo.mark / letterhead + content_margins_mm 安全边距）。规范与解析器见 `~/Code/astra-brand/BRAND_SPEC.md`、`resolve.py`；客户没真信纸用 `tools/make_letterhead.py` 由 logo+配色生成。本技能自有的品牌/风格机制继续可用，但**客户级资产以品牌包为准**。

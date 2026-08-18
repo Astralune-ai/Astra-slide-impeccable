@@ -1,6 +1,6 @@
 # Mode G · Screenshot Redraw (截图重绘)
 
-> 提取自 SKILL.md · 用户贴一张表格/框架/图表的截图，要求在 Asyre 视觉系统里重绘成 SVG 嵌到 slide 里。
+> 提取自 SKILL.md · 用户贴一张表格/框架/图表的截图，要求在 Astra 视觉系统里重绘成 SVG 嵌到 slide 里。
 
 ### Mode G: Screenshot Redraw (截图重绘)
 
@@ -18,10 +18,10 @@
    - Directional relationships (arrows, flow, hierarchy)
    - Source attribution (if visible: "Strategyzer", "Porter's Five Forces", etc.)
 3. **Confirm with user** — Present what you identified:
-   - "I see a 4×3 comparison table with headers: [X, Y, Z]. Redraw in Asyre Dark Gold SVG?"
+   - "I see a 4×3 comparison table with headers: [X, Y, Z]. Redraw in Astra Dark Gold SVG?"
    - Flag anything ambiguous or hard to read
 4. **Redraw as SVG** — Recreate using the presentation's visual system:
-   - Use the active style's CSS variables (colors, fonts) — default: Asyre Dark Gold
+   - Use the active style's CSS variables (colors, fonts) — default: Astra Dark Gold
    - SVG `<text>` minimum 12px per ASHER_PREFERENCES
    - Map original color semantics to our palette:
      - Blue/primary → `var(--accent-info)` / `#5dade2`

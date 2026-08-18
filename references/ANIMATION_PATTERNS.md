@@ -7,7 +7,7 @@
 打开 [animation-showcase.html](../animation-showcase.html) 可查看 110 种动画效果的实时演示。所有效果持续循环运行，可直接从中选取代码使用。
 
 ```bash
-open ~/.claude/skills/next-slide-impeccable/animation-showcase.html
+open ~/.claude/skills/astra-slide-impeccable/animation-showcase.html
 ```
 
 选取流程：浏览素材库 → 找到合适的效果编号 → 参考下方对应 pattern 的代码片段 → 应用到目标结构中。
