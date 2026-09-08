@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="zh"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P02 · Dense Modules Portrait — Astra Tech Stack 9:16</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#e8e4df;margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.wrap{width:min(100vw, calc(100vh * 9 / 16));height:min(100vh, calc(100vw * 16 / 9));aspect-ratio:9/16;background:#0a0a0b;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.wrap svg{width:100%;height:100%;object-fit:contain;display:block}
+</style></head><body><div class="wrap"><svg id="svg" viewBox="0 0 720 1280" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="gridSmall" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#c4a35a" stroke-width="0.15" opacity="0.2"/>
+  </pattern>
+  <pattern id="gridLarge" width="100" height="100" patternUnits="userSpaceOnUse">
+    <rect width="100" height="100" fill="url(#gridSmall)"/>
+    <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#c4a35a" stroke-width="0.4" opacity="0.25"/>
+  </pattern>
+  <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="layerGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#c4a35a" stop-opacity="0.05"/>
+    <stop offset="50%" stop-color="#c4a35a" stop-opacity="0.18"/>
+    <stop offset="100%" stop-color="#c4a35a" stop-opacity="0.05"/>
+  </linearGradient>
+  <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#c4a35a" stop-opacity="0"/>
+    <stop offset="50%" stop-color="#c4a35a" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="#c4a35a" stop-opacity="0"/>
+  </linearGradient>
+  <clipPath id="mainClip"><rect x="8" y="8" width="704" height="1264"/></clipPath>
+</defs>
+
+<rect width="720" height="1280" fill="#0a0a0b"/>
+<rect width="720" height="1280" fill="url(#gridLarge)"/>
+<rect id="scanLine" x="8" y="-180" width="704" height="180" fill="url(#scanGrad)" clip-path="url(#mainClip)" opacity="0.8"/>
+
+<text x="30" y="34" font-family="JetBrains Mono,monospace" font-size="12" fill="#c4a35a" opacity="0.35" letter-spacing="2">IMPECCABLE · v2</text>
+<g id="cornerRing" transform="translate(660, 50)">
+  <circle r="26" fill="none" stroke="#c4a35a" stroke-width="0.6" opacity="0.3"/>
+  <circle id="ringInner" r="18" fill="none" stroke="#c4a35a" stroke-width="0.4" opacity="0.35" stroke-dasharray="3,4"/>
+  <circle r="10" fill="#c4a35a" opacity="0.08"/>
+  <text y="5" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#c4a35a" opacity="0.6">P02</text>
+</g>
+
+<!-- HEADER -->
+<text x="360" y="92" text-anchor="middle" font-family="Noto Serif SC" font-size="34" font-weight="700" fill="#c4a35a" opacity="0" class="title">Astra 技术栈拆解</text>
+<text x="360" y="124" text-anchor="middle" font-family="Noto Serif SC" font-size="20" fill="#e8e4df" opacity="0" class="title2">5 层 · 15 个核心模块</text>
+<text x="360" y="156" text-anchor="middle" font-family="Space Grotesk" font-size="13" fill="#c4a35a" letter-spacing="4" opacity="0" class="subtitle">DENSE MODULES · BLUEPRINT VIEW</text>
+
+<!-- ============ LAYER 1 · INFRASTRUCTURE (y: 200-360) ============ -->
+<g class="layer" data-i="0" opacity="0">
+  <rect x="30" y="200" width="660" height="160" rx="3" fill="url(#layerGrad)" stroke="#c4a35a" stroke-width="0.6" stroke-opacity="0.35" stroke-dasharray="6,3" class="layerBg"/>
+  <text x="50" y="226" font-family="JetBrains Mono" font-size="12" fill="#c4a35a" letter-spacing="3" opacity="0.85">L1 · INFRASTRUCTURE</text>
+  <text x="50" y="248" font-family="Noto Serif SC" font-size="18" font-weight="700" fill="#e8e4df">基础设施</text>
+  <text x="670" y="226" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#c4a35a" opacity="0.5">3 mod</text>
+
+  <g class="mod"><rect x="50" y="270" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="62" y="292" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">Lightsail SG</text>
+    <text x="62" y="312" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">主服务器 · ap-southeast-1</text>
+    <text x="62" y="332" font-family="JetBrains Mono" font-size="11" fill="#8a8578">2 vCPU · 8GB · Ubuntu 22</text>
+  </g>
+  <g class="mod"><rect x="260" y="270" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="272" y="292" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">PM2 进程管</text>
+    <text x="272" y="312" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">12 个常驻服务</text>
+    <text x="272" y="332" font-family="JetBrains Mono" font-size="11" fill="#8a8578">auto-restart · log rotate</text>
+  </g>
+  <g class="mod"><rect x="470" y="270" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="482" y="292" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">Vault 密钥</text>
+    <text x="482" y="312" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">.env.master 单源</text>
+    <text x="482" y="332" font-family="JetBrains Mono" font-size="11" fill="#8a8578">分发到子项目 .env</text>
+  </g>
+</g>
+
+<!-- ============ LAYER 2 · MODELS (y: 380-540) ============ -->
+<g class="layer" data-i="1" opacity="0">
+  <rect x="30" y="380" width="660" height="160" rx="3" fill="url(#layerGrad)" stroke="#c4a35a" stroke-width="0.6" stroke-opacity="0.35" stroke-dasharray="6,3" class="layerBg"/>
+  <text x="50" y="406" font-family="JetBrains Mono" font-size="12" fill="#c4a35a" letter-spacing="3" opacity="0.85">L2 · MODELS</text>
+  <text x="50" y="428" font-family="Noto Serif SC" font-size="18" font-weight="700" fill="#e8e4df">模型层</text>
+  <text x="670" y="406" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#c4a35a" opacity="0.5">3 mod</text>
+
+  <g class="mod"><rect x="50" y="450" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="62" y="472" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">Claude 4.5/4.6</text>
+    <text x="62" y="492" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">Sonnet · Opus</text>
+    <text x="62" y="512" font-family="JetBrains Mono" font-size="11" fill="#8a8578">主推理 · prompt caching</text>
+  </g>
+  <g class="mod"><rect x="260" y="450" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="272" y="472" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">Gemini 3 Pro</text>
+    <text x="272" y="492" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">image preview</text>
+    <text x="272" y="512" font-family="JetBrains Mono" font-size="11" fill="#8a8578">概念艺术底图生成</text>
+  </g>
+  <g class="mod"><rect x="470" y="450" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="482" y="472" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">LiteLLM 代理</text>
+    <text x="482" y="492" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">统一 API 网关</text>
+    <text x="482" y="512" font-family="JetBrains Mono" font-size="11" fill="#8a8578">规划中 · 三层架构</text>
+  </g>
+</g>
+
+<!-- ============ LAYER 3 · SKILLS (y: 560-720) ============ -->
+<g class="layer" data-i="2" opacity="0">
+  <rect x="30" y="560" width="660" height="160" rx="3" fill="url(#layerGrad)" stroke="#c4a35a" stroke-width="0.6" stroke-opacity="0.35" stroke-dasharray="6,3" class="layerBg"/>
+  <text x="50" y="586" font-family="JetBrains Mono" font-size="12" fill="#c4a35a" letter-spacing="3" opacity="0.85">L3 · SKILLS</text>
+  <text x="50" y="608" font-family="Noto Serif SC" font-size="18" font-weight="700" fill="#e8e4df">技能层</text>
+  <text x="670" y="586" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#c4a35a" opacity="0.5">3 mod</text>
+
+  <g class="mod"><rect x="50" y="630" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="62" y="652" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">Astra Skills</text>
+    <text x="62" y="672" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">16 个本地 + 服务器</text>
+    <text x="62" y="692" font-family="JetBrains Mono" font-size="11" fill="#8a8578">CSV 索引同步</text>
+  </g>
+  <g class="mod"><rect x="260" y="630" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="272" y="652" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">Presentation</text>
+    <text x="272" y="672" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">16:9 + 9:16 · 50+ 风格</text>
+    <text x="272" y="692" font-family="JetBrains Mono" font-size="11" fill="#8a8578">SVG · GSAP · PDF export</text>
+  </g>
+  <g class="mod"><rect x="470" y="630" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="482" y="652" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">DocForge</text>
+    <text x="482" y="672" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">MD → PDF/Word</text>
+    <text x="482" y="692" font-family="JetBrains Mono" font-size="11" fill="#8a8578">21 预设 · CJK 开箱</text>
+  </g>
+</g>
+
+<!-- ============ LAYER 4 · AGENTS (y: 740-900) ============ -->
+<g class="layer" data-i="3" opacity="0">
+  <rect x="30" y="740" width="660" height="160" rx="3" fill="url(#layerGrad)" stroke="#c4a35a" stroke-width="0.6" stroke-opacity="0.35" stroke-dasharray="6,3" class="layerBg"/>
+  <text x="50" y="766" font-family="JetBrains Mono" font-size="12" fill="#c4a35a" letter-spacing="3" opacity="0.85">L4 · AGENTS</text>
+  <text x="50" y="788" font-family="Noto Serif SC" font-size="18" font-weight="700" fill="#e8e4df">Agent 层</text>
+  <text x="670" y="766" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#c4a35a" opacity="0.5">3 mod</text>
+
+  <g class="mod"><rect x="50" y="810" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="62" y="832" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">小A · OpenClaw</text>
+    <text x="62" y="852" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">Discord 中枢</text>
+    <text x="62" y="872" font-family="JetBrains Mono" font-size="11" fill="#8a8578">日常任务 · 团队协调</text>
+  </g>
+  <g class="mod"><rect x="260" y="810" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="272" y="832" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">本地 Claude Code</text>
+    <text x="272" y="852" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">复杂任务分身</text>
+    <text x="272" y="872" font-family="JetBrains Mono" font-size="11" fill="#8a8578">架构 · 部署 · 开发</text>
+  </g>
+  <g class="mod"><rect x="470" y="810" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="482" y="832" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">Pair Coding</text>
+    <text x="482" y="852" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">MCP Agent Mail</text>
+    <text x="482" y="872" font-family="JetBrains Mono" font-size="11" fill="#8a8578">多 Claude 协作</text>
+  </g>
+</g>
+
+<!-- ============ LAYER 5 · OUTPUT (y: 920-1080) ============ -->
+<g class="layer" data-i="4" opacity="0">
+  <rect x="30" y="920" width="660" height="160" rx="3" fill="url(#layerGrad)" stroke="#c4a35a" stroke-width="0.6" stroke-opacity="0.35" stroke-dasharray="6,3" class="layerBg"/>
+  <text x="50" y="946" font-family="JetBrains Mono" font-size="12" fill="#c4a35a" letter-spacing="3" opacity="0.85">L5 · DELIVERABLES</text>
+  <text x="50" y="968" font-family="Noto Serif SC" font-size="18" font-weight="700" fill="#e8e4df">交付层</text>
+  <text x="670" y="946" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#c4a35a" opacity="0.5">3 mod</text>
+
+  <g class="mod"><rect x="50" y="990" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="62" y="1012" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">客户服务器</text>
+    <text x="62" y="1032" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">Lightsail × N</text>
+    <text x="62" y="1052" font-family="JetBrains Mono" font-size="11" fill="#8a8578">独立部署 · 小A 同步</text>
+  </g>
+  <g class="mod"><rect x="260" y="990" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="272" y="1012" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">PDF / Slides</text>
+    <text x="272" y="1032" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">Astra 演示 · 论文</text>
+    <text x="272" y="1052" font-family="JetBrains Mono" font-size="11" fill="#8a8578">300+ 项目 / 月</text>
+  </g>
+  <g class="mod"><rect x="470" y="990" width="200" height="76" rx="2" fill="#0a0a0b" fill-opacity="0.7" stroke="#c4a35a" stroke-width="0.7" stroke-opacity="0.6" class="modBox"/>
+    <text x="482" y="1012" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#c4a35a">社媒内容</text>
+    <text x="482" y="1032" font-family="Noto Serif SC" font-size="12" fill="#e8e4df">小红书 · 抖音</text>
+    <text x="482" y="1052" font-family="JetBrains Mono" font-size="11" fill="#8a8578">XHS · TikTok scripts</text>
+  </g>
+</g>
+
+<!-- ============ STATS BAR (y: 1100-1180) ============ -->
+<g id="stats" opacity="0">
+  <line x1="30" y1="1108" x2="690" y2="1108" stroke="#c4a35a" stroke-width="0.5" opacity="0.3" stroke-dasharray="2,3"/>
+  <text x="120" y="1145" text-anchor="middle" font-family="Space Grotesk" font-size="32" font-weight="700" fill="#c4a35a"><tspan class="tnum" data-target="5">0</tspan></text>
+  <text x="120" y="1170" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#8a8578" letter-spacing="2">LAYERS</text>
+  <text x="300" y="1145" text-anchor="middle" font-family="Space Grotesk" font-size="32" font-weight="700" fill="#c4a35a"><tspan class="tnum" data-target="15">0</tspan></text>
+  <text x="300" y="1170" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#8a8578" letter-spacing="2">MODULES</text>
+  <text x="480" y="1145" text-anchor="middle" font-family="Space Grotesk" font-size="32" font-weight="700" fill="#c4a35a"><tspan class="tnum" data-target="16">0</tspan></text>
+  <text x="480" y="1170" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#8a8578" letter-spacing="2">SKILLS</text>
+  <text x="620" y="1145" text-anchor="middle" font-family="Space Grotesk" font-size="32" font-weight="700" fill="#c4a35a">∞</text>
+  <text x="620" y="1170" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#8a8578" letter-spacing="2">UPTIME</text>
+</g>
+
+<!-- FOOTER -->
+<text x="30" y="1255" font-family="JetBrains Mono" font-size="11" fill="#c4a35a" opacity="0.35" letter-spacing="1">STR-PORTRAIT-02 / REV.A</text>
+<text x="690" y="1255" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#c4a35a" opacity="0.35" letter-spacing="1">9:16 · DENSE MODULES</text>
+
+</svg></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function(){
+  // Header
+  gsap.to('.title', { opacity: 1, duration: 0.8, delay: 0.2, ease: 'power2.out' });
+  gsap.to('.title2', { opacity: 1, duration: 0.8, delay: 0.45, ease: 'power2.out' });
+  gsap.to('.subtitle', { opacity: 1, duration: 0.8, delay: 0.7, ease: 'power2.out' });
+
+  // Layers stagger top to bottom
+  gsap.to('.layer', { opacity: 1, duration: 0.6, stagger: 0.18, delay: 1.0, ease: 'power2.out' });
+
+  // Stats fade in
+  gsap.to('#stats', { opacity: 1, duration: 0.8, delay: 2.4 });
+
+  // Counter tweens
+  document.querySelectorAll('.tnum').forEach((el, i) => {
+    const target = parseFloat(el.dataset.target);
+    gsap.to({ v: 0 }, {
+      v: target, duration: 1.2, delay: 2.6 + i * 0.15, ease: 'power2.out',
+      onUpdate: function () {
+        el.textContent = Math.round(this.targets()[0].v);
+      }
+    });
+  });
+
+  // PERPETUAL: layer background dashed border breathing
+  gsap.to('.layerBg', { strokeOpacity: 0.65, duration: 2.4, repeat: -1, yoyo: true, ease: 'sine.inOut', stagger: 0.18, delay: 2.0 });
+
+  // PERPETUAL: module box stroke breathing (subtle)
+  gsap.to('.modBox', { strokeOpacity: 0.85, duration: 2.8, repeat: -1, yoyo: true, ease: 'sine.inOut', stagger: 0.06, delay: 2.4 });
+
+  // PERPETUAL: corner ring rotation
+  gsap.to('#ringInner', { rotation: 360, transformOrigin: 'center', duration: 16, repeat: -1, ease: 'none' });
+
+  // PERPETUAL: vertical scan line
+  gsap.to('#scanLine', { attr: { y: 1280 }, duration: 7, repeat: -1, ease: 'none', delay: 1.2 });
+})();
+</script></body></html>

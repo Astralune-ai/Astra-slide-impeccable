@@ -31,7 +31,7 @@ If user picks "I'll provide my own images" -> ask for image paths, proceed to St
 
 For each slide that needs a background image, generate a short image prompt. The prompt should describe an **atmospheric, abstract background** — NOT a literal illustration of the slide content.
 
-**When using Asyre Dark Gold style** (recommended), follow the proven style system from [ASYRE_BRAND_PRESET.md](ASYRE_BRAND_PRESET.md):
+**When using Astra Dark Gold style** (recommended), follow the proven style system from [ASYRE_BRAND_PRESET.md](ASYRE_BRAND_PRESET.md):
 
 **Prompt template:**
 ```
@@ -54,7 +54,7 @@ No text.
 - Subject should be `semi-transparent` / `glowing edges` — designed to look good under overlay
 - ALWAYS end with `No text, no watermarks`
 
-**Anti-patterns (from Asyre IMAGE_PROMPTS):**
+**Anti-patterns (from Astra IMAGE_PROMPTS):**
 - NO `photorealistic` — use concept art
 - NO `neon` / `cyan on dark` / `purple-to-blue gradient` — these are AI slop
 - NO text rendered in image — all text goes in HTML
@@ -68,7 +68,7 @@ No text.
 - Trust → `a pair of hands slowly releasing a golden glowing leash`
 - Long-term vision → `a single eternal golden flame burning steady in absolute darkness`
 
-**For non-Asyre styles:** Adapt the prompt template to match the chosen style's color palette. Replace "amber and gold" with the style's accent colors. Keep the structure: `abstract metaphor + color direction + black/dark background + concept art + no text`.
+**For non-Astra styles:** Adapt the prompt template to match the chosen style's color palette. Replace "amber and gold" with the style's accent colors. Keep the structure: `abstract metaphor + color direction + black/dark background + concept art + no text`.
 
 **Key principles:**
 - Each slide gets a DIFFERENT visual metaphor — never repeat the same concept
